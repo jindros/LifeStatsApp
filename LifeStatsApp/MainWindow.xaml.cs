@@ -1,5 +1,5 @@
 ﻿using HtmlAgilityPack;
-using LifeStatsApp.Data;
+using LifeStatsApp.Model;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System;
+using static System.Net.WebRequestMethods;
 
 namespace LifeStatsApp
 {
@@ -26,63 +28,72 @@ namespace LifeStatsApp
         {
             InitializeComponent();
 
-            ObservableCollection<Movie> custdata = GetData();
 
- 
-            DG1.DataContext = custdata;
 
         }
 
-        private ObservableCollection<Movie> GetData()
+        private ObservableCollection<Movie> GetMoviesData()
         {
-            ObservableCollection<Movie> returnValue = new ObservableCollection<Movie>();
+            List<Movie> movies = new List<Movie>();
 
-            string url = "https://en.wikipedia.org/wiki/List_of_programmers";
+            int i = 1;
 
-            // string url = "https://www.csfd.cz/uzivatel/7063-jindros/hodnoceni/";
-
-            string response = CallUrl(url).Result;
-
-            var linkList = ParseHtml(response);
-
-            foreach (string s in linkList)
+            while (true)
             {
-                returnValue.Add(new Movie() { Name = s });
+                string response = CallUrl("https://www.csfd.cz/uzivatel/7063-jindros/hodnoceni/?page=" + i.ToString()).Result;
+
+                List<Movie> moviesFromCurrentPage = ParseHtml(response);
+
+                if (moviesFromCurrentPage.Count == 0)
+                    break;
+
+                i++;
+
+                movies.AddRange(moviesFromCurrentPage);
             }
 
-            //WriteToCsv(linkList);
-
-            //return View();
-
-        
-
-            //for (int i = 0; i < 200; i++)
-            //{
-            //    returnValue.Add(new Movie() { CsfdLink = "fdf", Name = "", Year = "fdf" });
-            //}
-
-            return returnValue;
+            return new ObservableCollection<Movie>(movies);
         }
 
 
-        private List<string> ParseHtml(string html)
+        private List<Movie> ParseHtml(string html /*, ObservableCollection<Movie> movies */)
         {
             HtmlDocument htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
 
-            var programmerLinks = htmlDoc.DocumentNode.Descendants("li")
-                .Where(node => !node.GetAttributeValue("class", "").Contains("tocsection"))
-                .ToList();
 
-            List<string> wikiLink = new List<string>();
+            // < a href = "/film/1420300-the-nerd-crew/" class="film-title-name">The Nerd Crew</a>
+            // < span class="film-title-info"><span class="info">(2017)</span> <span class="info">(seriál)</span></span>
+            // < span class="info">(2017)</span>
 
-            foreach (var link in programmerLinks)
+
+            var tds = htmlDoc.QuerySelectorAll(".name");
+
+            var movies = new List<Movie>();
+
+            foreach (var td in tds)
             {
-                if (link.FirstChild.Attributes.Count > 0)
-                    wikiLink.Add("https://en.wikipedia.org/" + link.FirstChild.Attributes[0].Value);
+                var link = td.QuerySelectorAll(".film-title-name").FirstOrDefault();
+
+                if (link is null)
+                    continue;
+
+                int year = -1;
+
+                var yearHtml = td.QuerySelectorAll(".info").FirstOrDefault();
+
+                if (yearHtml != null)
+
+                {
+                    string yearString = yearHtml.InnerHtml.Replace("(", string.Empty).Replace(")", string.Empty);
+                    int.TryParse(yearString, out year);
+                }
+
+                movies.Add(new Movie() { Name = link.InnerHtml, Year = year });
+
             }
 
-            return wikiLink;
+            return movies;
         }
 
 
@@ -106,7 +117,9 @@ namespace LifeStatsApp
 
         void ButtonMouseUp(object sender, RoutedEventArgs e)
         {
-            hah.Background = Brushes.LightBlue;
+            ObservableCollection<Movie> custdata = GetMoviesData();
+
+            DG1.DataContext = custdata;
         }
     }
 }
