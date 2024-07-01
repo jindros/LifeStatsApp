@@ -1,0 +1,39 @@
+﻿<Window x:Class="LifeStatsApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LifeStatsApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    
+
+    
+    
+    <Grid Name="pnlMainGrid" MouseUp="pnlMainGrid_MouseUp" Background="LightBlue" Margin="10,-15,0,0">
+        <!--
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="91*"/>
+        </Grid.ColumnDefinitions>
+        -->
+        <Button Name="hah" Click="ButtonMouseUp" Content="test" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
+        
+        
+        <DataGrid Name="DG1" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="58,66,74,24" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"  Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Year" Binding="{Binding Year}" />
+                <DataGridHyperlinkColumn Header="CSFD link" Binding="{Binding CsfdLink}" />
+                <!--The Email property contains a URI.  For example "mailto:lucy0@adventure-works.com"-->
+                <!--
+                <DataGridHyperlinkColumn Header="CSFD link" Binding="{Binding CsfdLink}"  ContentBinding="{Binding Email, Converter={StaticResource EmailConverter}}" />
+                -->
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        
+
+    </Grid>
+</Window>
