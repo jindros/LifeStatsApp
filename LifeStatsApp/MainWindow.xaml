@@ -18,7 +18,7 @@
             <ColumnDefinition Width="91*"/>
         </Grid.ColumnDefinitions>
         -->
-        <Button Name="hah" Click="ButtonMouseUp" Content="test" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
+        <Button Name="WebScrapButton" Click="ButtonMouseUp" Content="test" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
         
         
         <DataGrid Name="DG1" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="58,66,74,24" >

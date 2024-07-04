@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System;
 using static System.Net.WebRequestMethods;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LifeStatsApp
 {
@@ -27,33 +28,37 @@ namespace LifeStatsApp
         public MainWindow()
         {
             InitializeComponent();
-
-
-
         }
 
-        private ObservableCollection<Movie> GetMoviesData()
+        private async Task<ObservableCollection<Movie>> GetMoviesDataAsync()
         {
+            
+
+
             List<Movie> movies = new List<Movie>();
 
             int i = 1;
 
             while (true)
             {
-                string response = CallUrl("https://www.csfd.cz/uzivatel/7063-jindros/hodnoceni/?page=" + i.ToString()).Result;
+                var response = CallUrl("https://www.csfd.cz/uzivatel/7063-jindros/hodnoceni/?page=" + i.ToString()).Result;
 
                 List<Movie> moviesFromCurrentPage = ParseHtml(response);
 
                 if (moviesFromCurrentPage.Count == 0)
+                {
                     break;
-
+                }
                 i++;
 
                 movies.AddRange(moviesFromCurrentPage);
             }
 
             return new ObservableCollection<Movie>(movies);
+
         }
+
+
 
 
         private List<Movie> ParseHtml(string html /*, ObservableCollection<Movie> movies */)
@@ -98,13 +103,15 @@ namespace LifeStatsApp
 
 
 
-        private static /* async */ Task<string> CallUrl(string fullUrl)
+        private static async Task<string> CallUrl(string fullUrl)
         {
             HttpClient client = new HttpClient();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
             client.DefaultRequestHeaders.Accept.Clear();
-            var response = client.GetStringAsync(fullUrl);
-            return /* await */ response;
+
+            string response = await client.GetStringAsync(fullUrl);
+
+            return response;
         }
 
 
@@ -115,11 +122,15 @@ namespace LifeStatsApp
             // MessageBox.Show("You clicked me at " + e.GetPosition(this).ToString());
         }
 
-        void ButtonMouseUp(object sender, RoutedEventArgs e)
+        private async void ButtonMouseUp(object sender, RoutedEventArgs e)
         {
-            ObservableCollection<Movie> custdata = GetMoviesData();
+            WebScrapButton.Content = "Loading...";
 
-            DG1.DataContext = custdata;
+            DG1.DataContext = new ObservableCollection<Movie>(await Task.Run(() => GetMoviesDataAsync()));
+
+            WebScrapButton.Content = "Done.";
         }
     }
 }
+
+
