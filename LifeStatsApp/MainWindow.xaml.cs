@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System;
 using static System.Net.WebRequestMethods;
 using static System.Net.Mime.MediaTypeNames;
+using Serilog;
 
 namespace LifeStatsApp
 {
@@ -25,6 +26,8 @@ namespace LifeStatsApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly LifeStatsAppDBContext _context = new LifeStatsAppDBContext();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -124,6 +127,21 @@ namespace LifeStatsApp
 
         private async void ButtonMouseUp(object sender, RoutedEventArgs e)
         {
+
+            //        Log.Logger = new LoggerConfiguration()
+            //.MinimumLevel.Debug()
+            //.WriteTo.Console()
+            //.WriteTo.File("logfile.log", rollingInterval: RollingInterval.Day)
+            //.CreateLogger();
+
+
+
+
+            //        Log.Debug("Starting up");
+            //        Log.Debug("Shutting down");
+
+
+
             WebScrapButton.Content = "Loading...";
 
             DG1.DataContext = new ObservableCollection<Movie>(await Task.Run(() => GetMoviesDataAsync()));

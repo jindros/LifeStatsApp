@@ -6,18 +6,10 @@ using System.Threading.Tasks;
 
 namespace LifeStatsApp.Model
 {
-    internal class Movie
+    internal class Book
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        public int Year { get; set; }
-
-        public string CsfdLink { get; set; } 
-        
-        public int Rating { get; set; }
-
-        public DateTime DateOfRating { get; set; }
     }
 }
