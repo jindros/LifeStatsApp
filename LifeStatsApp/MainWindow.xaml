@@ -26,6 +26,8 @@
                 <DataGridTextColumn Header="Name"  Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Year" Binding="{Binding Year}" />
                 <DataGridHyperlinkColumn Header="CSFD link" Binding="{Binding CsfdLink}" />
+                <DataGridTextColumn Header="Rating" Binding="{Binding Rating}" />
+                <DataGridTextColumn Header="Date Of Rating" Binding="{Binding DateOfRating}" />
                 <!--The Email property contains a URI.  For example "mailto:lucy0@adventure-works.com"-->
                 <!--
                 <DataGridHyperlinkColumn Header="CSFD link" Binding="{Binding CsfdLink}"  ContentBinding="{Binding Email, Converter={StaticResource EmailConverter}}" />

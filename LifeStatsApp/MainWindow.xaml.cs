@@ -19,6 +19,7 @@ using static System.Net.WebRequestMethods;
 using static System.Net.Mime.MediaTypeNames;
 using Serilog;
 
+
 namespace LifeStatsApp
 {
     /// <summary>
@@ -46,7 +47,7 @@ namespace LifeStatsApp
             {
                 var response = CallUrl("https://www.csfd.cz/uzivatel/7063-jindros/hodnoceni/?page=" + i.ToString()).Result;
 
-                List<Movie> moviesFromCurrentPage = ParseHtml(response);
+                List<Movie> moviesFromCurrentPage = ParseMoviesHtml(response);
 
                 if (moviesFromCurrentPage.Count == 0)
                 {
@@ -64,7 +65,7 @@ namespace LifeStatsApp
 
 
 
-        private List<Movie> ParseHtml(string html /*, ObservableCollection<Movie> movies */)
+        private List<Movie> ParseMoviesHtml(string html /*, ObservableCollection<Movie> movies */)
         {
             HtmlDocument htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
@@ -74,30 +75,58 @@ namespace LifeStatsApp
             // < span class="film-title-info"><span class="info">(2017)</span> <span class="info">(seriál)</span></span>
             // < span class="info">(2017)</span>
 
-
-            var tds = htmlDoc.QuerySelectorAll(".name");
-
             var movies = new List<Movie>();
 
-            foreach (var td in tds)
+            var table = htmlDoc.QuerySelector(".striped");
+
+            if (table == null)
+                return movies;
+
+
+            var trs = table.SelectNodes(".//tr");
+
+            if (trs == null)
+                return movies;
+
+            foreach (var tr in trs)
             {
-                var link = td.QuerySelectorAll(".film-title-name").FirstOrDefault();
+
+                var link = tr.QuerySelectorAll(".film-title-name").FirstOrDefault();
 
                 if (link is null)
                     continue;
 
                 int year = -1;
 
-                var yearHtml = td.QuerySelectorAll(".info").FirstOrDefault();
+                var yearHtml = tr.QuerySelectorAll(".info").FirstOrDefault();
 
                 if (yearHtml != null)
-
                 {
                     string yearString = yearHtml.InnerHtml.Replace("(", string.Empty).Replace(")", string.Empty);
                     int.TryParse(yearString, out year);
                 }
 
-                movies.Add(new Movie() { Name = link.InnerHtml, Year = year });
+
+                var stars = tr.QuerySelector(".stars");
+
+                string classStringValue = stars.Attributes["class"].Value;
+
+                char starRating = classStringValue[classStringValue.Length - 1];
+
+                int rating = 0;
+
+                if (Char.IsNumber(starRating))
+                    rating = starRating - '0';
+
+                // star-rating
+                // stars stars-5
+                // date-only
+
+                var dateString = tr.QuerySelector(".date-only").InnerText;
+
+                DateTime dateOfRating = DateTime.Parse(dateString);
+
+                movies.Add(new Movie() { Name = link.InnerHtml, Year = year, CsfdLink = link.Attributes["href"].Value, Rating = rating, DateOfRating = dateOfRating });
 
             }
 
@@ -122,29 +151,25 @@ namespace LifeStatsApp
 
         private void pnlMainGrid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            // MessageBox.Show("You clicked me at " + e.GetPosition(this).ToString());
         }
 
         private async void ButtonMouseUp(object sender, RoutedEventArgs e)
         {
 
-            //        Log.Logger = new LoggerConfiguration()
-            //.MinimumLevel.Debug()
-            //.WriteTo.Console()
-            //.WriteTo.File("logfile.log", rollingInterval: RollingInterval.Day)
-            //.CreateLogger();
-
-
-
-
-            //        Log.Debug("Starting up");
-            //        Log.Debug("Shutting down");
-
-
-
             WebScrapButton.Content = "Loading...";
 
-            DG1.DataContext = new ObservableCollection<Movie>(await Task.Run(() => GetMoviesDataAsync()));
+            ObservableCollection<Movie> movies = await Task.Run(() => GetMoviesDataAsync());
+
+
+            DG1.DataContext = movies; 
+
+            foreach (Movie movie in movies)
+            {
+                _context.Add(movie);
+            }
+
+            _context.SaveChanges();
+
 
             WebScrapButton.Content = "Done.";
         }
