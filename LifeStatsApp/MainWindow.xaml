@@ -18,7 +18,7 @@
             <ColumnDefinition Width="91*"/>
         </Grid.ColumnDefinitions>
         -->
-        <Button Name="WebScrapButton" Click="ButtonMouseUp" Content="test" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
+        <Button Name="MoviesWebScrapButton" Click="MoviesButtonMouseUp" Content="Scrap Movies" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top" Height="26" Width="140"/>
         
         
         <DataGrid Name="DG1" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="58,66,74,24" >
@@ -34,8 +34,9 @@
                 -->
             </DataGrid.Columns>
         </DataGrid>
-        
-        
+        <Button Content="Scrap board games" Click="BoardGamesButtonMouseUp" HorizontalAlignment="Left" Margin="184,24,0,0" VerticalAlignment="Top" Height="28" Width="153"/>
+
+
 
     </Grid>
 </Window>

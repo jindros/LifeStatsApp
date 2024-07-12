@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeStatsApp", "LifeStatsApp\LifeStatsApp.csproj", "{8E28A21B-47B9-4428-9202-4612DEBD09DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifeStatsApp", "LifeStatsApp\LifeStatsApp.csproj", "{8E28A21B-47B9-4428-9202-4612DEBD09DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeStatsWebApp", "LifeStatsWebApp\LifeStatsWebApp\LifeStatsWebApp.csproj", "{F97EB3B5-C7E6-4563-B17B-1017149FED1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeStatsWebApp.Client", "LifeStatsWebApp\LifeStatsWebApp.Client\LifeStatsWebApp.Client.csproj", "{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{8E28A21B-47B9-4428-9202-4612DEBD09DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E28A21B-47B9-4428-9202-4612DEBD09DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E28A21B-47B9-4428-9202-4612DEBD09DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F97EB3B5-C7E6-4563-B17B-1017149FED1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F97EB3B5-C7E6-4563-B17B-1017149FED1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F97EB3B5-C7E6-4563-B17B-1017149FED1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F97EB3B5-C7E6-4563-B17B-1017149FED1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

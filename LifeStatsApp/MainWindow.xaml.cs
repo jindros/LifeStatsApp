@@ -18,6 +18,7 @@ using System;
 using static System.Net.WebRequestMethods;
 using static System.Net.Mime.MediaTypeNames;
 using Serilog;
+using System.Xml.Linq;
 
 
 namespace LifeStatsApp
@@ -34,11 +35,11 @@ namespace LifeStatsApp
             InitializeComponent();
         }
 
+
+        #region movies
+
         private async Task<ObservableCollection<Movie>> GetMoviesDataAsync()
         {
-            
-
-
             List<Movie> movies = new List<Movie>();
 
             int i = 1;
@@ -59,7 +60,6 @@ namespace LifeStatsApp
             }
 
             return new ObservableCollection<Movie>(movies);
-
         }
 
 
@@ -133,6 +133,87 @@ namespace LifeStatsApp
             return movies;
         }
 
+        #endregion
+
+
+
+        #region board games
+
+
+        
+
+        private async Task<ObservableCollection<BoardGame>> GetBoardGamesDataAsync()
+        {
+            List<BoardGame> boardGames = new List<BoardGame>();
+
+
+            HttpClient client = new HttpClient();
+
+
+            string response = await client.GetStringAsync("https://boardgamegeek.com/xmlapi/collection/Jindros");
+
+
+            var boardGamesXml = XDocument.Parse(response);
+
+
+
+            var items = boardGamesXml.Element("items");
+
+
+            if (items != null)
+            {
+                IEnumerable<XElement> itemsList = items.Elements("item");
+
+                if (itemsList != null)
+                {
+                    foreach (XElement item in itemsList)
+                    {
+                        BoardGame boardGame = new BoardGame
+                        {
+                            Name = item.Element("name").Value,                            
+                            Plays = Int32.Parse(item.Element("numplays").Value),                            
+                            BGGLink = "https://boardgamegeek.com/boardgame/" + Int32.Parse(item.Attribute("objectid").Value)
+                        };
+
+                        var wishListCommentNode = item.Element("wishlistcomment");
+                        if (wishListCommentNode != null)
+                        {
+                            boardGame.WishlistComment = wishListCommentNode.Value;
+                        }
+
+
+                        int year = -1;
+
+
+                        var yearPublishedElement = item.Element("yearpublished");
+
+
+                        if (yearPublishedElement != null)                        
+                            Int32.TryParse(yearPublishedElement.Value, out year);                        
+
+
+                        boardGame.Year = year;
+
+
+
+                        string valueString = item.Element("stats").Element("rating").Attribute("value").Value;
+
+                        float rating = -1.0f;
+
+                        float.TryParse(valueString, out rating);                                                 
+
+                        boardGame.Rating = rating;
+
+                        boardGames.Add(boardGame);
+                    }
+                }
+            }
+
+            return new ObservableCollection<BoardGame>(boardGames);
+        }
+
+
+        #endregion
 
 
         private static async Task<string> CallUrl(string fullUrl)
@@ -153,10 +234,10 @@ namespace LifeStatsApp
         {
         }
 
-        private async void ButtonMouseUp(object sender, RoutedEventArgs e)
+        private async void MoviesButtonMouseUp(object sender, RoutedEventArgs e)
         {
 
-            WebScrapButton.Content = "Loading...";
+            MoviesWebScrapButton.Content = "Loading...";
 
             ObservableCollection<Movie> movies = await Task.Run(() => GetMoviesDataAsync());
 
@@ -171,9 +252,28 @@ namespace LifeStatsApp
             _context.SaveChanges();
 
 
-            WebScrapButton.Content = "Done.";
+            MoviesWebScrapButton.Content = "Done.";
         }
+
+        private async void BoardGamesButtonMouseUp(object sender, RoutedEventArgs e)
+        {
+
+            // https://boardgamegeek.com/xmlapi/collection/Jindros
+
+
+            ObservableCollection<BoardGame> bgs = await Task.Run(() => GetBoardGamesDataAsync());
+
+
+        }            
     }
 }
+
+
+
+
+
+
+
+
 
 
