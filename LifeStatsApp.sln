@@ -5,9 +5,13 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifeStatsApp", "LifeStatsApp\LifeStatsApp.csproj", "{8E28A21B-47B9-4428-9202-4612DEBD09DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeStatsWebApp", "LifeStatsWebApp\LifeStatsWebApp\LifeStatsWebApp.csproj", "{F97EB3B5-C7E6-4563-B17B-1017149FED1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifeStatsWebApp", "LifeStatsWebApp\LifeStatsWebApp\LifeStatsWebApp.csproj", "{F97EB3B5-C7E6-4563-B17B-1017149FED1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeStatsWebApp.Client", "LifeStatsWebApp\LifeStatsWebApp.Client\LifeStatsWebApp.Client.csproj", "{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifeStatsWebApp.Client", "LifeStatsWebApp\LifeStatsWebApp.Client\LifeStatsWebApp.Client.csproj", "{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeStatsVueFrontEnd.Server", "LifeStatsVueFrontEnd\LifeStatsVueFrontEnd.Server\LifeStatsVueFrontEnd.Server.csproj", "{D5CEC5E7-3869-4D6B-B0AD-975609D6B107}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "lifestatsvuefrontend.client", "LifeStatsVueFrontEnd\lifestatsvuefrontend.client\lifestatsvuefrontend.client.esproj", "{AED61BBF-7703-4D6D-88EF-319C3A4A3BAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,16 @@ Global
 		{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E6DDB4E-340E-4D1D-98DE-5FD3265C946A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5CEC5E7-3869-4D6B-B0AD-975609D6B107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5CEC5E7-3869-4D6B-B0AD-975609D6B107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5CEC5E7-3869-4D6B-B0AD-975609D6B107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5CEC5E7-3869-4D6B-B0AD-975609D6B107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED61BBF-7703-4D6D-88EF-319C3A4A3BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AED61BBF-7703-4D6D-88EF-319C3A4A3BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AED61BBF-7703-4D6D-88EF-319C3A4A3BAE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AED61BBF-7703-4D6D-88EF-319C3A4A3BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED61BBF-7703-4D6D-88EF-319C3A4A3BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED61BBF-7703-4D6D-88EF-319C3A4A3BAE}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

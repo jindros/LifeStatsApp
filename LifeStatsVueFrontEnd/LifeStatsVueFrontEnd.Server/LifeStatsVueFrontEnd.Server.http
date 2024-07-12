@@ -1,0 +1,6 @@
+@LifeStatsVueFrontEnd.Server_HostAddress = http://localhost:5215
+
+GET {{LifeStatsVueFrontEnd.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

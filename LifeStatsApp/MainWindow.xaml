@@ -34,7 +34,7 @@
                 -->
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Scrap board games" Click="BoardGamesButtonMouseUp" HorizontalAlignment="Left" Margin="184,24,0,0" VerticalAlignment="Top" Height="28" Width="153"/>
+        <Button Name="BoardGamesWebScrapButton" Content="Scrap board games" Click="BoardGamesButtonMouseUp" HorizontalAlignment="Left" Margin="184,24,0,0" VerticalAlignment="Top" Height="28" Width="153"/>
 
 
 

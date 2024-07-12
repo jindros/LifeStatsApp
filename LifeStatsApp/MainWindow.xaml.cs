@@ -146,19 +146,13 @@ namespace LifeStatsApp
         {
             List<BoardGame> boardGames = new List<BoardGame>();
 
-
             HttpClient client = new HttpClient();
-
 
             string response = await client.GetStringAsync("https://boardgamegeek.com/xmlapi/collection/Jindros");
 
-
             var boardGamesXml = XDocument.Parse(response);
 
-
-
             var items = boardGamesXml.Element("items");
-
 
             if (items != null)
             {
@@ -180,21 +174,17 @@ namespace LifeStatsApp
                         {
                             boardGame.WishlistComment = wishListCommentNode.Value;
                         }
-
+                        else
+                            boardGame.WishlistComment = String.Empty;
 
                         int year = -1;
 
-
                         var yearPublishedElement = item.Element("yearpublished");
-
 
                         if (yearPublishedElement != null)                        
                             Int32.TryParse(yearPublishedElement.Value, out year);                        
 
-
                         boardGame.Year = year;
-
-
 
                         string valueString = item.Element("stats").Element("rating").Attribute("value").Value;
 
@@ -239,6 +229,11 @@ namespace LifeStatsApp
 
             MoviesWebScrapButton.Content = "Loading...";
 
+
+            //_context.Movies.RemoveRange(_context.Movies);
+            //_context.SaveChanges();
+
+
             ObservableCollection<Movie> movies = await Task.Run(() => GetMoviesDataAsync());
 
 
@@ -257,13 +252,23 @@ namespace LifeStatsApp
 
         private async void BoardGamesButtonMouseUp(object sender, RoutedEventArgs e)
         {
+            BoardGamesWebScrapButton.Content = "Loading...";
 
-            // https://boardgamegeek.com/xmlapi/collection/Jindros
+
+            //_context.BoardGames.RemoveRange(_context.BoardGames);
+            //_context.SaveChanges();
 
 
             ObservableCollection<BoardGame> bgs = await Task.Run(() => GetBoardGamesDataAsync());
 
+            foreach (BoardGame boardgame in bgs)
+            {
+                _context.Add(boardgame);
+            }
 
+            _context.SaveChanges();
+
+            BoardGamesWebScrapButton.Content = "Done...";
         }            
     }
 }
